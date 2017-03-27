@@ -1,0 +1,90 @@
+<% include ../partials/header %>
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/index-style.css">
+<header class="jumbotron jumbotron-inner jumbo-bg">
+    <div class="container">
+        <h1>EQ - Wiki</h1>
+        <p>Search every question you have!</p>
+          <form action="/posts/search" method="get">
+            <div class="container input-group">
+              <input type="text" class="form-control" id="tokenfield-1"
+              placeholder="Type maximum 4 tags..."  name="search">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-default btn-def">Submit</button>
+              </span>
+            </div>
+          </form>
+    </div>
+</header>
+
+<div class="container message-header">
+    <h1>All Posts</h1>
+</div>
+  
+<div class="container">
+    <div class="row">
+        <% function dynamicSort(property) { %>
+		<%	    var sortOrder = 1; %>
+		<%	    if(property[0] === "-") { %>
+		<%	        sortOrder = -1; %>
+		<%	        property = property.substr(1); %>
+		<%	    } %>
+		<%	    return function (a,b) { %>
+		<%	        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0; %>
+		<%	        return result * sortOrder; %>
+		<%	    } %>
+		<%	} %>
+		
+				
+		<% function dynamicSortMultiple() { %>
+    <%    var props = arguments; %>
+    <%    return function (obj1, obj2) { %>
+    <%        var i = 0, result = 0, numberOfProperties = props.length; %>
+    <%        while(result === 0 && i < numberOfProperties) { %>
+    <%            result = dynamicSort(props[i])(obj1, obj2); %>
+    <%            i++; %>
+    <%        } %>
+    <%        return result; %>
+    <%    } %>
+    <% } %>
+    
+		<% var sortedPosts = posts.sort(dynamicSortMultiple("-created", "-ranking")); %>
+		
+        <% sortedPosts.forEach(function(post){ %>
+            <div class="container panel panel-default">
+                <div class="row panel-body testing">
+            		<div class="col-lg-2 col-md-2 col-sm-12">
+            	        <table class="table table-borderless">
+            	            <tbody class="search-table text-center">
+                              <tr>
+                                <td><%= post.ranking %></td>
+                                <td><%= post.comments.length %></td>
+                              </tr>
+                              <tr>
+                                <td>Votes</td>
+                                <td>Comments</td>
+                              </tr>
+                            </tbody>  
+            	        </table>   
+            		</div>
+		            <div class="col-lg-10 col-md-10 col-sm-12 little-border">
+        				<div >
+        					<a href="/posts/<%= post._id %>"><h2><%= post.name %></h2></a>
+        					<h6>
+        					    <% for(var i = 0; i < post.tags.length; i++){ %>
+        	        				<span class="label label-default"><%= post.tags[i] %></span>
+                    			<% } %> 
+                    		<br><br>
+        					    Posted <span class="comment-date"><%= post.created %></span> by <%= post.author.username %>
+            				</h6>
+        				</div>
+        			</div>
+        		</div>	
+            </div>
+            <br>
+        <% }); %>
+    </div>
+</div>
+
+<script src="/js/DateTimeCalc.js" ></script >
+<% include ../partials/footer %>

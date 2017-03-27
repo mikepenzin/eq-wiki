@@ -1,0 +1,127 @@
+<% include ../partials/header %>
+
+<script src="/lib/tinymce/tinymce.min.js"></script>
+<script>
+tinymce.init({
+  selector: 'textarea',
+  plugins: [
+        "advlist autolink lists link image charmap print preview anchor",
+        "searchreplace visualblocks code fullscreen",
+        "insertdatetime media table contextmenu paste imagetools"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+  imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
+  content_css: [
+    '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
+    '//www.tinymce.com/css/codepen.min.css'
+  ]
+});
+</script>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-1 col-xs-2">
+			<div class="ranking">
+				<div><form action="/posts/<%= post._id %>/RankUp" method="POST"><button><i class="fa fa-chevron-up" aria-hidden="true"></i></button></form></div>
+				<div class="text"><%= post.ranking %></div>
+				<div><form action="/posts/<%= post._id %>/RankDown" method="POST"><button><i class="fa fa-chevron-down" aria-hidden="true"></i></button></form></div>
+			</div>
+		</div>
+		<div class="col-md-11 col-xs-10">
+			<div class="thumbnail">
+				<div class="caption-full">
+					<h2><%= post.name %></h2>
+					<h6>Posted <%= date_time %> by <%= post.author.username %> <span class="badge"><%= authorRanking %></span></h6>
+					<h6>
+						
+						<% for(var i = 0; i < tags.length; i++){ %>
+	        				<span class="label label-default"><%= tags[i] %></span>
+            			<% } %>
+    				</h6>	
+				    <p>
+                    	<%- post.descr %>
+                    </p>
+                    
+	                    <% if(currentUser && post.author.id.equals(currentUser._id)){ %>
+		                    <div class="delete-form">
+		                    	<a href="/posts/<%= post._id %>/edit" class="btn btn-sm btn-default btn-def"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+		                    	<form action="/posts/<%= post._id %>?_method=DELETE" method="POST" class="delete-form">
+					                <button class="btn btn-sm btn-delete"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+					            </form>
+		                    </div>
+		                 <% } %> 
+		                
+				</div>
+			</div>
+			<div class="well">
+				<% if(!currentUser){ %>
+	        		<div class="text-right">
+						<a href="/login" class="btn btn-delete">Post your comment</a>
+					</div>
+	            <% } else { %>
+					<form action="/posts/<%= post._id %>/comments" method="POST">
+				      <div class="form-group">
+				        <textarea class="form-control" rows="2" placeholder="Enter your review" name="comment[text]"></textarea>
+				      </div>
+				      <div class="text-right">
+				      	<button type="submit" class="btn btn-delete">Post your comment</button>
+				      </div>
+				    </form>
+				   	<hr>
+				<% } %>    
+				
+				<% function dynamicSort(property) { %>
+				<%	    var sortOrder = 1; %>
+				<%	    if(property[0] === "-") { %>
+				<%	        sortOrder = -1; %>
+				<%	        property = property.substr(1); %>
+				<%	    } %>
+				<%	    return function (a,b) { %>
+				<%	        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0; %>
+				<%	        return result * sortOrder; %>
+				<%	    } %>
+				<%	} %>
+				<% var sortedComments = post.comments.sort(dynamicSort("-ranking")); %>
+				<% sortedComments.forEach(function(comment){ %>
+	
+                	<div class="row comments">
+                		<div class="col-lg-1 col-md-1 col-xs-2">
+                			<div class="ranking-comments">
+								<div><form action="/posts/<%= post._id %>/comments/<%= comment._id %>/RankUp" method="POST"><button><i class="fa fa-chevron-up" aria-hidden="true"></i></button></form></div>
+								<div class="text"><%= comment.ranking %></div>
+								<div><form action="/posts/<%= post._id %>/comments/<%= comment._id %>/RankDown" method="POST"><button><i class="fa fa-chevron-down" aria-hidden="true"></i></button></form></div>
+							</div>
+                		</div>
+                		<div class="col-lg-11 col-md-11 col-xs-10">
+                			<div><span class="author-name"><%= comment.author.username %></span>
+		        			<% for(var y = 0; y < commenters.length; y++){ %>
+		        				<% if(commenters[y].username === comment.author.username){ %>
+                					<span class="badge"><%= commenters[y].ranking %></span>
+                					<% break; %>
+                				<% } %>
+                			<% } %>
+                			<span class="pull-right">
+                			<% if(currentUser && comment.author.id.equals(currentUser._id)){ %>	
+			                    <div class="delete-form-comments">
+			                    	<a href="/posts/<%= post._id %>/comments/<%= comment._id %>/edit" class="btn btn-xs btn-default btn-def"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+			                    	<form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" class="delete-form">
+						                <button class="btn btn-xs btn-delete"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+						            </form>
+			                    </div>
+			                <% } %><small class="comment-date"><%= comment.created %></small></span>
+			                </div>
+                			<p>
+                				<span><%- comment.text %></span>
+		                    </p> 
+		                    <hr>
+                		</div>
+                	</div>
+                <% }); %>  	
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/js/DateTimeCalc.js" ></script >
+
+<% include ../partials/footer %>
