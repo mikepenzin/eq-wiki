@@ -1,7 +1,6 @@
 var middlewareObj = {};
 var post        = require('../models/post');
 var Comment     = require('../models/comment');
-var User        = require('../models/user');
 
 middlewareObj.isLoggedIn = function (req, res, next){
     if(req.isAuthenticated()){
@@ -20,7 +19,7 @@ middlewareObj.checkPostOwnership = function(req, res, next){
             req.flash("error", "Something whent wrong :(");
             res.redirect("back");
           } else {
-            if(foundPost.author.id.equals(req.user._id)){
+            if(foundPost.author.id.equals(req.user._id) || req.user.role === "manager"){
                 next();
             } else {
                 req.flash("error", "Something whent wrong :(");
@@ -43,7 +42,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
             console.log(err);
             res.redirect("back");
           } else {
-            if(foundComment.author.id.equals(req.user._id)){
+            if(foundComment.author.id.equals(req.user._id) || req.user.role === "manager"){
                 next();
             } else {
                 req.flash("error", "Something whent wrong :(");

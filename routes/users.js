@@ -21,10 +21,8 @@ router.get("/:user_id", middleware.isLoggedIn, function(req, res){
                     var userID = foundUser._id;
                     if (postID.equals(userID)){
                         AuthorPosts.push(foundPosts[i]);
-                        console.log(AuthorPosts);
                     }    
                 }
-                console.log(AuthorPosts);
                 res.render("user/profile", {user:foundUser, posts:AuthorPosts});
               }
             });      

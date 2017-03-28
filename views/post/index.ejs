@@ -23,7 +23,7 @@
   
 <div class="container">
     <div class="row">
-        <% function dynamicSort(property) { %>
+    <% function dynamicSort(property) { %>
 		<%	    var sortOrder = 1; %>
 		<%	    if(property[0] === "-") { %>
 		<%	        sortOrder = -1; %>
@@ -35,7 +35,6 @@
 		<%	    } %>
 		<%	} %>
 		
-				
 		<% function dynamicSortMultiple() { %>
     <%    var props = arguments; %>
     <%    return function (obj1, obj2) { %>
@@ -48,8 +47,7 @@
     <%    } %>
     <% } %>
     
-		<% var sortedPosts = posts.sort(dynamicSortMultiple("-created", "-ranking")); %>
-		
+		<% var sortedPosts = posts.sort(dynamicSortMultiple("-ranking", "-created")); %>
         <% sortedPosts.forEach(function(post){ %>
             <div class="container panel panel-default">
                 <div class="row panel-body testing">

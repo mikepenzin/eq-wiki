@@ -18,16 +18,21 @@ router.get("/register", function(req, res){
 //CREATE - register new user
 router.post("/register", function(req, res){
     var newUser = new User({
-        username: req.body.username,
-        ranking: 0
-    });
+            username: req.body.username,
+            ranking: 0,
+            role: "manager"
+        });
+    
+    if (req.body.username === "Admin" || req.body.username === "admin"){
+            newUser.role = "manager";
+    }
+    
     User.register(newUser, req.body.password, function(err, user){
         if(err){
             console.log(err);
             return res.render("register",{"error": err.message});
         } else {
             passport.authenticate("local")(req, res, function(){
-                req.flash("success", "Yay! You just successfully Signed Up! Nice to meet you " + req.body.username);
                 res.redirect("/posts"); 
             });
         }

@@ -3,13 +3,16 @@ var mongoose                = require('mongoose'),
     
     
 var UserSchema = new mongoose.Schema({
-    sso: String ,
+    username: String ,
     password: String,
     email: String,
     firstName: String,
     lastName: String,
     ranking: Number,
-    role: String //need to be default value - worker
+    role:  {
+        type: String, 
+        default: "member"
+    }
 });
 
 UserSchema.plugin(passportLocalMongoose);
