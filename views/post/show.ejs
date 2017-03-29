@@ -41,8 +41,7 @@ tinymce.init({
 				    <p>
                     	<%- post.descr %>
                     </p>
-                    
-	                    <% if((currentUser && post.author.id.equals(currentUser._id)) || (currentUser.role === "manager")){ %>
+	                    <% if(currentUser && (post.author.id.equals(currentUser._id) || currentUser.role === "manager")){ %>
 		                    <div class="delete-form">
 		                    	<a href="/posts/<%= post._id %>/edit" class="btn btn-sm btn-default btn-def"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
 		                    	<form action="/posts/<%= post._id %>?_method=DELETE" method="POST" class="delete-form">
@@ -50,7 +49,6 @@ tinymce.init({
 					            </form>
 		                    </div>
 		                 <% } %> 
-		                
 				</div>
 			</div>
 			<div class="well">
@@ -101,14 +99,17 @@ tinymce.init({
                 				<% } %>
                 			<% } %>
                 			<span class="pull-right">
-                			<% if((currentUser && comment.author.id.equals(currentUser._id)) || (currentUser.role === "manager")){ %>	
+                				
+                			<% if(currentUser && (comment.author.id.equals(currentUser._id) || currentUser.role === "manager")){ %>	
 			                    <div class="delete-form-comments">
 			                    	<a href="/posts/<%= post._id %>/comments/<%= comment._id %>/edit" class="btn btn-xs btn-default btn-def"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
 			                    	<form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" class="delete-form">
 						                <button class="btn btn-xs btn-delete"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
 						            </form>
 			                    </div>
-			                <% } %><small class="comment-date"><%= comment.created %></small></span>
+			                <% } %>
+			                
+			                <small class="comment-date"><%= comment.created %></small></span>
 			                </div>
                 			<p>
                 				<span><%- comment.text %></span>
