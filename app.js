@@ -25,7 +25,10 @@ var commentRoutes   = require("./routes/comments"),
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.DATABASEURL || 'mongodb://localhost/eqwiki');
 
+// Adding public folder to Express routes to serve JS and CSS files from /public and /bower_components folders
 app.use(express.static(__dirname + "/public", { maxAge: 86400000 }));
+app.use(express.static(__dirname + "/bower_components", { maxAge: 86400000 }));
+
 // to not use .ejs ending
 app.set("view engine","ejs");
 
@@ -33,7 +36,6 @@ app.set("view engine","ejs");
 app.use(methodOverride("_method"));
 //use sanitizer in order to prevend entering js scripts in textarea
 app.use(expressSanitizer());
-
 
 //tell express to use body-parser
 app.use(bodyParser.urlencoded({extended: true}));
@@ -70,14 +72,11 @@ app.use(function(req, res, next){
 // END - Passport configuration
 //=========================
 
+
 app.use("/", indexRoutes);
 app.use("/profile", userRoutes);
 app.use("/posts", postRoutes);
 app.use("/posts/:id/comments", commentRoutes);
-
-// app.get("*", function(req, res){
-//     res.send("Not what we expected :(");
-// });
 
 
 app.listen(process.env.PORT, process.env.IP, function(){

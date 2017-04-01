@@ -1,0 +1,32 @@
+{
+  "name": "timeago-simple",
+  "description": "Timeago is a plugin that makes it easy to support automatically updating fuzzy timestamps (e.g. \"4 minutes ago\" or \"1 day ago\")",
+  "main": "dist/timeago.js",
+  "authors": [
+    "Mike Penzin"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "time",
+    "calculation",
+    "date",
+    "difference"
+  ],
+  "homepage": "https://github.com/mikepenzin/timeago",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "8457dfddfe",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8457dfddfe4891c58d4b318242b0b2e26f7fabaf"
+  },
+  "_source": "https://github.com/mikepenzin/timeago.git",
+  "_target": "*",
+  "_originalSource": "timeago-simple"
+}

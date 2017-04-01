@@ -1,7 +1,8 @@
 @import 'https://fonts.googleapis.com/css?family=Roboto';
-@import 'jquery-ui.css';
-@import 'tokenfield-typeahead.css';
-@import 'bootstrap-tokenfield.css';
+@import '../components/jquery-ui/themes/base/jquery-ui.min.css';
+@import '../components/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css';
+@import '../components/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css';
+
 
 body { 
 	background: #FBFBFB;
@@ -295,90 +296,15 @@ p {
 	background: #FFFFFF;
 	text-align: center;
 	color: #666;
-	padding-top: 1%;
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
 	margin: 0 auto;
-}
-
-.social-footer{
-	text-align: center;
-	margin-bottom: 20px;
-}
-
-.leftpanel {
-	/*padding-left: 15%;*/
-	text-align: center;
-	margin-bottom: 20px;
-}
-
-.min-footer {
-	padding-top: 15px;
+	padding-top: 20px;
+	padding-bottom: 15px;
 }
 
 .love {
 	color: #be0000;
-}
-
-.leftpanel a{
-	/*background: #ffffff;*/
-	color: #393e41;
-	line-height: 200%;
-	padding-bottom: 5px;
-	font-size: 0.9em;
-}
-
-.leftpanel a:hover {
-	color: #c7c7c7;
-	text-decoration: none;
-}
-
-.right-panel {
-	margin: 0 auto; 
-	font-size: 1.3rem;
-
-}
-
-.right-panel .input-group{
-	/*background: #ffffff;*/
-	color: #393e41;
-	width: 100%;
-	padding-bottom: 5px;
-	font-size: 0.9em;
-}
-
-.right-panel a:hover {
-	color: #c7c7c7;
-	text-decoration: none;
-}
-
-.button-social {
-	background: #ffffff;
-	border: 0px;
-	color: #74777A;
-	font-size: 1.9rem;
-}
-
-.button-social:hover {
-	color: #393e41;
-}
-
-/*.up {*/
-/*    font-size: 30px;*/
-/*    margin-bottom: 60px;*/
-/*    color: #393e41;*/
-/*}*/
-
-.love {
-	color: #be0000;
-}
-
-.navbar-nav .profile-img {
-	max-height: 30px;
-	border-radius: 50%;
-	width: auto;
-	margin-top: 10px;
-	margin-bottom: 10px;
 }
 
 .comments {
@@ -523,7 +449,7 @@ h2 {
 	vertical-align: middle;
 }
 
-.testing {
+.posts-table {
 	display:flex;
 	justify-content:center;
 	align-items:center;

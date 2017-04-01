@@ -50,7 +50,7 @@
 		<% var sortedPosts = posts.sort(dynamicSortMultiple("-ranking", "-created")); %>
         <% sortedPosts.forEach(function(post){ %>
             <div class="container panel panel-default">
-                <div class="row panel-body testing">
+                <div class="row panel-body posts-table">
             		<div class="col-lg-2 col-md-2 col-sm-12">
             	        <table class="table table-borderless">
             	            <tbody class="search-table text-center">
@@ -84,5 +84,6 @@
     </div>
 </div>
 
-<script src="/js/DateTimeCalc.js" ></script >
+
+<script src="/js/DateTimeCalc.js" ></script>
 <% include ../partials/footer %>
