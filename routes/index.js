@@ -19,8 +19,7 @@ router.get("/register", function(req, res){
 router.post("/register", function(req, res){
     var newUser = new User({
             username: req.body.username,
-            ranking: 0,
-            role: "manager"
+            ranking: 0
         });
     
     if (req.body.username === "Admin" || req.body.username === "admin"){
