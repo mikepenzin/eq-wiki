@@ -64,12 +64,15 @@ middlewareObj.checkPostVoteOwnership = function(req, res, next){
             req.flash("error", "Something whent wrong :(");
             res.redirect("back");
           } else {
-            if(!(foundPost.author.id.equals(req.user._id))){
+            if(!(foundPost.author.id.equals(req.user._id)) && (req.user.role != 'manager')){
                 next();
+            } else if((req.user.role === 'manager')) {
+                req.flash("error", "Manager cannot vote for posts!");
+                res.redirect("back");
             } else {
                 req.flash("error", "You can't vote for your own post!");
                 res.redirect("back");
-            }    
+            }
           }
         });
         
@@ -87,12 +90,15 @@ middlewareObj.checkCommentVoteOwnership = function(req, res, next){
             console.log(err);
             res.redirect("back");
           } else {
-            if(!(foundComment.author.id.equals(req.user._id))){
+            if(!(foundComment.author.id.equals(req.user._id)) && (req.user.role != 'manager')){
                 next();
+            } else if((req.user.role === 'manager')) {
+                req.flash("error", "Manager cannot vote for comments!");
+                res.redirect("back");
             } else {
                 req.flash("error", "You can't vote for your own comment!");
                 res.redirect("back");
-            }    
+            }   
           }
         });
     } else {

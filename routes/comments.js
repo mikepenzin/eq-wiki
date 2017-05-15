@@ -99,7 +99,7 @@ router.post("/:comment_id/RankUp", middleware.checkCommentVoteOwnership, functio
     Comment.findById(req.params.comment_id, function(err, foundComment){
     if (err) {
         console.error(err);
-      } else if(req.user.role != "manager") {
+      } else {
         var indexRanked = foundComment.rankedBy.indexOf(req.user._id);
         if(indexRanked == -1){
              foundComment.ranking++;
@@ -117,9 +117,6 @@ router.post("/:comment_id/RankUp", middleware.checkCommentVoteOwnership, functio
             req.flash("error", "You already voted for this comment!");
             res.redirect("back");
         } 
-      } else {
-            req.flash("error", "Manager cannot vote for comments!");
-            res.redirect("back");
       }
    });
 });
@@ -129,7 +126,7 @@ router.post("/:comment_id/RankDown", middleware.checkCommentVoteOwnership, funct
     Comment.findById(req.params.comment_id, function(err, foundComment){
     if (err) {
         console.error(err);
-      } else  if (req.user.role != "manager"){
+      } else {
         var indexRanked = foundComment.rankedBy.indexOf(req.user._id);
         if(indexRanked != -1){
              foundComment.rankedBy.splice(indexRanked, 1);
@@ -145,10 +142,7 @@ router.post("/:comment_id/RankDown", middleware.checkCommentVoteOwnership, funct
             foundUser.save();
         });
         res.redirect("back");
-      } else {
-        req.flash("error", "Manager cannot vote for posts!");
-        res.redirect("back");  
-      } 
+      }
    });
 });
 
