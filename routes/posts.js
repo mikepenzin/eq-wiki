@@ -139,7 +139,7 @@ router.post("/:id/RankUp", middleware.checkPostVoteOwnership, function(req, res)
     post.findById(req.params.id, function(err, foundPost){
     if (err) {
         console.error(err);
-      } else {
+      } else if(req.user.role != "manager") {
         var indexRanked = foundPost.rankedBy.indexOf(req.user._id);
         if(indexRanked == -1){
              foundPost.ranking++;
@@ -157,6 +157,9 @@ router.post("/:id/RankUp", middleware.checkPostVoteOwnership, function(req, res)
             req.flash("error", "You already voted for this post!");
             res.redirect("back");
         } 
+      } else {
+            req.flash("error", "Manager cannot vote for posts!");
+            res.redirect("back");
       } 
    });
 });
@@ -166,7 +169,7 @@ router.post("/:id/RankDown", middleware.checkPostVoteOwnership, function(req, re
     post.findById(req.params.id, function(err, foundPost){
     if (err) {
         console.error(err);
-      } else {
+      } else if (req.user.role != "manager"){
         var indexRanked = foundPost.rankedBy.indexOf(req.user._id);
         if(indexRanked != -1){
              foundPost.rankedBy.splice(indexRanked, 1);
@@ -182,7 +185,11 @@ router.post("/:id/RankDown", middleware.checkPostVoteOwnership, function(req, re
             foundUser.save();
         });
         res.redirect("back");
-      }  
+      } else {
+        req.flash("error", "Manager cannot vote for posts!");
+        res.redirect("back");  
+      } 
+      
    });
 });
 
