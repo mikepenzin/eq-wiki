@@ -5,4 +5,5 @@ body {
 .jumbotron-inner h1 {
 	color: #f6f7eb;
 	margin-top: 20vh;
+	padding: 0px;
 }

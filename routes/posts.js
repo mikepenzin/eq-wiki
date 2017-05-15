@@ -33,7 +33,7 @@ router.get("/search", function(req, res){
 
 router.post("/", middleware.isLoggedIn, function(req, res){
         var name = req.body.name;
-        var descr = req.body.descr;
+        var descr = req.sanitize(req.body.descr);
         var author = {
             id: req.user._id,
             username: req.user.username
@@ -72,9 +72,8 @@ router.get("/:id", function(req, res){
                   userID.push(foundPost.comments[i].author.id);
               }
                 User.find({'_id': { $in: userID}}, function(err, foundPosters){
-                      var date_time = timeago.simple(foundPost.created);
                       var tags = foundPost.tags;
-                      res.render("post/show", {post:foundPost, date_time:date_time, commenters:foundPosters, authorRanking:authorRanking, tags:tags});
+                      res.render("post/show", {post:foundPost, commenters:foundPosters, authorRanking:authorRanking, tags:tags});
                 });
           }); 
         }
@@ -94,7 +93,6 @@ router.put("/:id", middleware.checkPostOwnership, function(req, res){
     var name = req.body.name;
     var descr = req.body.descr;
     var tags = req.body.tag.split(",");
-    console.log(tags);
     var newpost = {name: name, descr: descr, tags:tags};
   post.findByIdAndUpdate(req.params.id, newpost, function(err, updatedPost){
     if(err){

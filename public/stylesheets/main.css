@@ -55,6 +55,7 @@ p {
 
 .jumbotron {
 	color: #f6f7eb;
+	padding: 15px;
 }
 
 .jumbotron-inner {
@@ -101,7 +102,6 @@ p {
 	text-align: left;
  	opacity: 0.8;
  	max-height: 34px;
- 	
  }
 
  .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
@@ -110,7 +110,6 @@ p {
 
 .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child>.btn, .input-group-btn:first-child>.btn-group>.btn, .input-group-btn:first-child>.dropdown-toggle, .input-group-btn:last-child>.btn-group:not(:last-child)>.btn, .input-group-btn:last-child>.btn:not(:last-child):not(.dropdown-toggle){
 	min-height: 34px;
-
 }
 
 .tokenfield {
@@ -143,6 +142,10 @@ p {
 
 .btn-addnew:visited {
 	background: #eaeaea;
+}
+
+.img-responsive, .thumbnail>img, .thumbnail a>img, .carousel-inner>.item>img, .carousel-inner>.item>a>img{
+	max-width: 80%;
 }
 
 /*Jumbotron background*/
@@ -238,6 +241,10 @@ p {
 	color: #393e41;
 	text-decoration: none;
 }
+
+/*.container {*/
+/*    padding-left: 0px;*/
+/*}*/
 
 /*Add form styling*/
 

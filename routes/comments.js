@@ -15,6 +15,7 @@ router.get('/new', middleware.isLoggedIn,  function(req, res) {
         res.render("comments/new", {post: post});
       }
     });
+    
 });
 
 
@@ -66,7 +67,9 @@ router.get('/:comment_id/edit', middleware.checkCommentOwnership, function(req, 
 
 //UPDATE Comment route
 router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
-  var commentText = {text:req.body.text};
+  var commentText = {
+     text : req.body.text
+  };
   Comment.findByIdAndUpdate(req.params.comment_id, commentText, function(err, updatedComment){
     if(err){
       console.log(err);

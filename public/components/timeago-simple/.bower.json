@@ -20,11 +20,11 @@
     "test",
     "tests"
   ],
-  "_release": "8457dfddfe",
+  "_release": "5e4e84e073",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "8457dfddfe4891c58d4b318242b0b2e26f7fabaf"
+    "commit": "5e4e84e073ca1b3ac051662b01ed4d647f2e72f0"
   },
   "_source": "https://github.com/mikepenzin/timeago.git",
   "_target": "*",

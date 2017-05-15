@@ -6,7 +6,7 @@
         <h1>EQ - Wiki</h1>
         <p>Search every question you have!</p>
           <form action="/posts/search" method="get">
-            <div class="container input-group">
+            <div class="input-group">
               <input type="text" class="form-control" id="tokenfield-1"
               placeholder="Type maximum 4 tags..."  name="search">
               <span class="input-group-btn">
@@ -49,9 +49,9 @@
     
 		<% var sortedPosts = posts.sort(dynamicSortMultiple("-ranking", "-created")); %>
         <% sortedPosts.forEach(function(post){ %>
-            <div class="container panel panel-default">
-                <div class="row panel-body posts-table">
-            		<div class="col-lg-2 col-md-2 col-sm-12">
+            <div class="container">
+                <div class="row posts-table">
+            		<div class="col-lg-2 col-md-4 visible-sm visible-md visible-lg hidden-xs">
             	        <table class="table table-borderless">
             	            <tbody class="search-table text-center">
                               <tr>
@@ -65,7 +65,7 @@
                             </tbody>  
             	        </table>   
             		</div>
-		            <div class="col-lg-10 col-md-10 col-sm-12 little-border">
+		            <div class="col-lg-10 col-md-8 col-sm-12 col-xs-12 little-border">
         				<div >
         					<a href="/posts/<%= post._id %>"><h2><%= post.name %></h2></a>
         					<h6>

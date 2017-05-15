@@ -34,11 +34,12 @@ app.set("view engine","ejs");
 
 //method override
 app.use(methodOverride("_method"));
-//use sanitizer in order to prevend entering js scripts in textarea
-app.use(expressSanitizer());
 
 //tell express to use body-parser
 app.use(bodyParser.urlencoded({extended: true}));
+
+//use sanitizer in order to prevend entering js scripts in textarea
+app.use(expressSanitizer());
 
 //app to use flash
 app.use(flash());

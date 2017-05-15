@@ -1,9 +1,9 @@
 <% include ../partials/header %>
 
-<script src='https://api.filepicker.io/v1/filepicker.js'></script>
+<script src='/js/filepicker/filepicker.js'></script>
 <script src='/js/tinymce/jscripts/tiny_mce/tiny_mce.js'></script>
 
-<div class="container">
+<div class="container" id="content">
 	<div class="row">
 		<div class="col-md-1 col-xs-2">
 			<div class="ranking">
@@ -16,7 +16,7 @@
 			<div class="thumbnail">
 				<div class="caption-full">
 					<h2><%= post.name %></h2>
-					<h6>Posted <%= date_time %> by <%= post.author.username %> <span class="badge"><%= authorRanking %></span></h6>
+					<h6>Posted <span class="timeago"><%=  post.created %></span> by <%= post.author.username %> <span class="badge"><%= authorRanking %></span></h6>
 					<h6>
 						
 						<% for(var i = 0; i < tags.length; i++){ %>
@@ -40,17 +40,20 @@
 				<% if(!currentUser){ %>
 	        		<div class="text-right">
 						<a href="/login" class="btn btn-delete">Post your comment</a>
+						<hr>
 					</div>
+					<br>
 	            <% } else { %>
 					<form action="/posts/<%= post._id %>/comments" method="POST">
 				      <div class="form-group">
-				        <textarea rows="2" class="form-control" name="comment[text]">Enter your review</textarea>
+				        <textarea rows="2" class="form-control" name="comment[text]">Enter your comment</textarea>
 				      </div>
 				      <div class="text-right">
 				      	<button type="submit" class="btn btn-delete">Post your comment</button>
 				      </div>
 				    </form>
 				   	<hr>
+				   	<br>
 				<% } %>    
 				
 				<% function dynamicSort(property) { %>
@@ -94,7 +97,7 @@
 			                    </div>
 			                <% } %>
 			                
-			                <small class="comment-date"><%= comment.created %></small></span>
+			                <small class="timeago"><%= comment.created %></small></span>
 			                </div>
                 			<p>
                 				<span><%- comment.text %></span>
@@ -135,6 +138,17 @@
     });
 </script>
 
-<script src="/js/DateTimeCalc.js" ></script>
+<script>
+
+	var images = document.getElementById('content').getElementsByTagName('img');
+	
+	for(var q = 0; q < images.length; q++){
+		images[q].removeAttribute('height');
+		images[q].removeAttribute('width');
+		images[q].removeAttribute('style');	
+		images[q].className = "img-responsive";
+	};	
+	
+</script>
 
 <% include ../partials/footer %>
