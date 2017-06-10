@@ -11,6 +11,34 @@ middlewareObj.isLoggedIn = function (req, res, next){
     }
 };
 
+middlewareObj.isAbleToCreatePost = function (req, res, next){
+    if(req.isAuthenticated()){
+        if(req.user.ranking > 20  || req.user.role === "manager") {
+            return next();   
+        } else {
+            req.flash("error", "You don't have enough rating to create posts!");
+            res.redirect("back");
+        }
+    } else {
+        req.flash("error", "Please login first!");
+        res.redirect("/login");
+    }
+};
+
+middlewareObj.isUserAdmin = function (req, res, next){
+    if(req.isAuthenticated()){
+        if(req.user.role === "manager") {
+            return next();   
+        } else {
+            req.flash("error", "You role isn't set as Manager");
+            res.redirect("back");
+        }
+    } else {
+        req.flash("error", "Please login first!");
+        res.redirect("/login");
+    }
+};
+
 middlewareObj.checkPostOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         post.findById(req.params.id, function(err, foundPost){
@@ -75,7 +103,6 @@ middlewareObj.checkPostVoteOwnership = function(req, res, next){
             }
           }
         });
-        
     } else {
         req.flash("error", "You need to be loggedin to do that!");
         res.redirect("back");

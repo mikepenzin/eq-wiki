@@ -30,4 +30,29 @@ router.get("/:user_id", middleware.isLoggedIn, function(req, res){
     });
 });
 
+router.get("/:user_id/update", middleware.isLoggedIn, function(req, res){
+    User.findById(req.params.user_id, function(err, foundUser){
+        if (err) {
+            console.log(err);    
+        } else {
+            res.render("user/update", {user:foundUser});
+        }
+    });
+});
+
+// Update user profile
+router.put("/:user_id/update", middleware.isLoggedIn, function(req, res){
+    var firstName = req.body.firstname;
+    var lastName = req.body.lastname;
+    var newData = {firstName: firstName, lastName: lastName};
+      User.findByIdAndUpdate(req.params.user_id, newData, function(err, updatedPost){
+        if(err){
+          console.log(err);
+          res.redirect("back");
+        } else {
+          res.redirect("/profile/" + req.params.user_id);
+        }
+      });
+});
+
 module.exports = router;

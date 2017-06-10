@@ -73,7 +73,7 @@
         	        				<span class="label label-default"><%= post.tags[i] %></span>
                     			<% } %> 
                     		<br><br>
-        					    Posted <span class="comment-date"><%= post.created %></span> by <%= post.author.username %>
+        					    Posted <span class="timeago"><%= post.created %></span> by <%= post.author.username %>
             				</h6>
         				</div>
         			</div>
@@ -84,6 +84,4 @@
     </div>
 </div>
 
-
-<script src="/js/DateTimeCalc.js" ></script>
 <% include ../partials/footer %>

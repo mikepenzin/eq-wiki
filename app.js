@@ -17,7 +17,8 @@ app.use(compression(9));
 var commentRoutes   = require("./routes/comments"),
     postRoutes      = require("./routes/posts"),
     indexRoutes     = require("./routes/index"),
-    userRoutes      = require("./routes/users");
+    userRoutes      = require("./routes/users"),
+    adminRoutes      = require("./routes/admin");
 
 
 // If process.env.DATABASEURL = undefined - need to perform:
@@ -78,7 +79,7 @@ app.use("/", indexRoutes);
 app.use("/profile", userRoutes);
 app.use("/posts", postRoutes);
 app.use("/posts/:id/comments", commentRoutes);
-
+app.use("/admin", adminRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("=========================");

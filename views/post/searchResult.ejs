@@ -15,6 +15,28 @@
     </div>
 </header>
   
+<div class="container" style="padding-bottom: 30px;">
+  <div class="row">
+  <h5 style="padding-left: 15px;">Refine your search with plain text</h5>
+    <form action="/posts/search/refine" method="get" class="form-inline">
+      <div class="col-xs-6">
+        <% if((typeof(refine) != "undefined")) { %>
+          <input type="text" class="form-control" style="width: 100%;"
+                             value="<%= refine %>"  name="refine">
+        <% } else { %>
+          <input type="text" class="form-control"
+                             placeholder="Refine your search with plain text"  name="refine">
+        <% } %>
+      </div>   
+        <input type="hidden" class="form-control"
+        value="<%= search %>"  name="search">
+        <button type="submit" class="btn btn-def" style="display: inline;">Refine search</button>
+    </form>
+  </div>  
+</div>
+
+<hr>
+
 <div class="container">
     <div class="row">
         <% function dynamicSort(property) { %>
@@ -68,7 +90,7 @@
           	        				<span class="label label-default"><%= post.tags[i] %></span>
                       			<% } %> 
                       		<br><br>
-          					    Posted <span class="comment-date"><%= post.created %></span> by <%= post.author.username %>
+          					    Posted <span class="timeago"><%= post.created %></span> by <%= post.author.username %>
               				</h6>
           				</div>
         			</div>
@@ -80,5 +102,4 @@
 </div>
 
 
-<script src="/js/DateTimeCalc.js" ></script>
 <% include ../partials/footer %>

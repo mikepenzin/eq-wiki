@@ -12,7 +12,9 @@ var UserSchema = new mongoose.Schema({
     role:  {
         type: String, 
         default: "member"
-    }
+    },
+    postsNumber: Number,
+    commentsNumber: Number
 });
 
 UserSchema.plugin(passportLocalMongoose);

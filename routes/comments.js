@@ -40,6 +40,14 @@ router.post('/', middleware.isLoggedIn, function(req, res) {
             comment.save();
             post.comments.push(comment);
             post.save();
+            
+            User.findById(req.user._id, function(err, foundUser){
+                if (foundUser.commentsNumber == undefined) {
+                    foundUser.commentsNumber = 0;
+                } 
+                foundUser.commentsNumber++;
+                foundUser.save();
+            });
             //redirect to post
             res.redirect("/posts/" + post._id);
           }
@@ -88,6 +96,10 @@ router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, re
          req.flash("error", "Something whent wrong :(");
          console.error(err);
       } else {
+          User.findById(req.user._id, function(err, foundUser){
+            foundUser.commentsNumber--;
+            foundUser.save();
+          });
           res.redirect("/posts/" + req.params.id);
       }        
    });

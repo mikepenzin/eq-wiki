@@ -32,6 +32,7 @@ router.post("/register", function(req, res){
             return res.render("register",{"error": err.message});
         } else {
             passport.authenticate("local")(req, res, function(){
+                req.flash("success", "Welcome a board! You have successfully registred!");
                 res.redirect("/posts"); 
             });
         }
@@ -53,6 +54,7 @@ router.post("/login", passport.authenticate("local", {
 //LOGOUT
 router.get("/logout", function(req, res){
     req.logout();
+    req.flash("success", "You have successfully logged out!");
     res.redirect("/posts");
 });
 

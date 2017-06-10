@@ -4,7 +4,7 @@ var post        = require('../models/post');
 var Comment     = require('../models/comment');
 var User        = require('../models/user');
 var middleware  = require('../middleware');
-var timeago     = require('timeago-simple');
+
 
 // INDEX route - show all data
 router.get("/", function(req, res){
@@ -31,9 +31,28 @@ router.get("/search", function(req, res){
     });
 });
 
-router.post("/", middleware.isLoggedIn, function(req, res){
+// SEARCH Route
+router.get("/search/refine", function(req, res){
+    var refine = req.query.refine;
+    var search = req.query.search;
+    var newSearch = search.split(", ");
+    
+    post.find({$and:[
+        {"tags":{"$in":newSearch }},
+        {$text: {$search:refine }}
+    ]}, function(err, foundPosts){
+      if(err){
+        console.log(err);
+      } else {
+        res.render("post/searchResult", {posts:foundPosts, search:search, refine:refine});
+      }
+    });
+});
+
+// POST - Create new post
+router.post("/", middleware.isAbleToCreatePost, function(req, res){
         var name = req.body.name;
-        var descr = req.sanitize(req.body.descr);
+        var descr = req.body.descr;
         var author = {
             id: req.user._id,
             username: req.user.username
@@ -47,6 +66,13 @@ router.post("/", middleware.isLoggedIn, function(req, res){
             if(err){
                 console.log(err);
             } else{
+                User.findById(req.user._id, function(err, foundUser){
+                    if (foundUser.postsNumber == undefined) {
+                        foundUser.postsNumber = 0;
+                    } 
+                    foundUser.postsNumber++;
+                    foundUser.save();
+                });
                 //redirect back to posts page
                 res.redirect("/posts");       
             }
@@ -55,7 +81,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 });
 
 //NEW - show form to add new item to the db
-router.get("/new", middleware.isLoggedIn, function(req, res){
+router.get("/new", middleware.isAbleToCreatePost, function(req, res){
     res.render("post/new");
 });
 
@@ -119,6 +145,11 @@ router.delete("/:id", middleware.checkPostOwnership, function(req, res){
                   console.log("Error removing comment: " + err);
                }
             });
+         });
+         
+         User.findById(req.user._id, function(err, foundUser){
+            foundUser.postsNumber--;
+            foundUser.save();
          });
 
          // Remove post

@@ -21,7 +21,6 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/img/favicon/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
-  
 	<link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
 </head>
 <body id="myPage">
@@ -47,27 +46,31 @@
             <% if(!currentUser){ %>
               <li><a href="/login">Login</a></li>
               <li><a href="/register">Sign Up</a></li>
+            <% } else  if (currentUser.role != 'manager') { %>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true"><%= currentUser.username %>  <span class="badge"><%= currentUser.ranking %></span> <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="/posts/new">Create new post</a></li>
+                      <li class="divider"></li>
+                      <li><a href="/profile/<%= currentUser._id %>">Profile Page</a></li>
+                      <li><a href="#">Settings</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="/logout">Logout</a></li>
             <% } else { %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true"><%= currentUser.username %>  <span class="badge"><%= currentUser.ranking %></span> <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="/posts/new">Create new post</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/profile/<%= currentUser._id %>">Profile Page</a></li>
-                  <li><a href="#">Settings</a></li>
-                </ul>
-              </li>
-              <li><a href="/logout">Logout</a></li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true"><%= currentUser.username %>  <span class="badge"><%= currentUser.ranking %></span> <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="/posts/new">Create new post</a></li>
+                      <li class="divider"></li>
+                      <li><a href="/profile/<%= currentUser._id %>">Profile Page</a></li>
+                      <li><a href="/admin/<%= currentUser._id %>">Manager Page</a></li>
+                      <li><a href="#">Settings</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="/logout">Logout</a></li>
             <% } %>
           </ul>
         </div>
       </div>
     </nav>
-    
-    <div class="container container-xs">
-      <% if(error && error.length > 0) { %>
-            <div class="alert alert-danger alert-dismissable fade in" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><%= error %></div>
-      <% } else if(success && success.length > 0) { %>
-            <div class="alert alert-success alert-dismissable fade in" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><%= success %></div>
-      <% } %>      
-    </div>

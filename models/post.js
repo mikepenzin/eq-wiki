@@ -27,4 +27,6 @@ var postSchema = new mongoose.Schema({
    ]
 });
 
+postSchema.index({'$**': 'text'});
+
 module.exports = mongoose.model("Post", postSchema);
