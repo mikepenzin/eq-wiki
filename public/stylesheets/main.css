@@ -56,13 +56,13 @@ p {
 
 .jumbotron {
 	color: #f6f7eb;
-	padding: 15px;
+	/*padding: 5px;*/
 }
 
 .jumbotron-inner {
 	background-color: #f6f7eb;
 	color: #f6f7eb;
-	text-align: center;
+	/*text-align: center;*/
 	font-family: 'Roboto';
 	position: relative;
     overflow: hidden;
@@ -73,7 +73,7 @@ p {
 .jumbotron-search {
 	background-color: #f6f7eb;
 	color: #f6f7eb;
-	text-align: center;
+	/*text-align: center;*/
 	font-family: 'Roboto';
 	position: relative;
     overflow: hidden;
@@ -91,7 +91,7 @@ p {
 
 .jumbotron-inner p {
 	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-bottom: 20px;
 }
 
 /*Search bar*/

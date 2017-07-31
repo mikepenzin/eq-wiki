@@ -11,9 +11,22 @@ middlewareObj.isLoggedIn = function (req, res, next){
     }
 };
 
+middlewareObj.isAdmin = function (req, res, next){
+    if(req.isAuthenticated()){
+        if(req.user.role === "manager") {
+            return next();
+        }
+        req.flash("error", "You don't have enough permissions to add new tags!");
+        res.redirect("back");
+    } else {
+        req.flash("error", "Please login first!");
+        res.redirect("/login");
+    }
+};
+
 middlewareObj.isAbleToCreatePost = function (req, res, next){
     if(req.isAuthenticated()){
-        if(req.user.ranking > 20  || req.user.role === "manager") {
+        if(req.user.ranking > 3  || req.user.role === "manager") {
             return next();   
         } else {
             req.flash("error", "You don't have enough rating to create posts!");

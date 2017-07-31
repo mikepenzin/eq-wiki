@@ -1,12 +1,61 @@
 <% include ../partials/header %>
 
-<div class="jumbotron jumbotron-search jumbo-bg">
+<div class="jumbotron jumbotron-search text-center jumbo-bg">
 	<div class="header-text">
 		<h2>Admin Panel</h2>
 	</div>
 </div>
 
+<% function dynamicSort(property) { %>
+<%	    var sortOrder = 1; %>
+<%	    if(property[0] === "-") { %>
+<%	        sortOrder = -1; %>
+<%	        property = property.substr(1); %>
+<%	    } %>
+<%	    return function (a,b) { %>
+<%	        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0; %>
+<%	        return result * sortOrder; %>
+<%	    } %>
+<%	} %>
+
+<div class="container row" style="margin: 0 auto;">
+    <div class="col-lg-3 col-md-3">
+        <p>Top searched tags:</p>
+        <ul class="list-group">
+          <% tags_data.forEach(function(tag) { %>    
+              <li class="list-group-item"><a href="/posts/search?search=<%= tag.tag %>"><%= tag.tag %></a> <span class="badge"><%= tag.searchNumber %></span></li>
+          <% }); %>      
+        </ul>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <p>Top tags used in posts:</p>
+        <ul class="list-group">
+          <% tags_posts_data.forEach(function(tag) { %>    
+              <li class="list-group-item"><a href="/posts/search?search=<%= tag.tag %>"><%= tag.tag %></a><span class="badge"><%= tag.postsNumber %></span></li>
+          <% }); %>      
+        </ul>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <p>Top viewed posts:</p>
+        <ul class="list-group">
+          <% posts_data.forEach(function(post) { %>    
+              <li class="list-group-item"><a href="/posts/<%= post._id %>"><%if (post.name.length > 20) { %><%= post.name.substring(0,20); %> ...<% } else { %> <%= post.name %> <% } %></a><span class="badge"><%= post.views %></span></li>
+          <% }); %>      
+        </ul>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <p>Top upvoted posts:</p>
+        <ul class="list-group">
+          <% postsVotes.forEach(function(post) { %>    
+              <li class="list-group-item"><a href="/posts/<%= post._id %>"><%if (post.name.length > 20) { %><%= post.name.substring(0,20); %> ...<% } else { %> <%= post.name %> <% } %></a> <span class="badge"><%= post.ranking %></span></li>
+          <% }); %>      
+        </ul>
+    </div>
+</div>
+
+<hr>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
+
     <div class="container"> 
         <button class="btn btn-def pull-right" style="margin-left: 5px;" id="btnExport" onclick="fnExcelReport();" alt="Export data to Excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export to Excel</button>
         <button class="btn btn-def pull-right" onclick="window.print();"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
@@ -44,10 +93,10 @@
 <br>
 <br>
 <br>
-
 <% include ../partials/footer %>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -92,5 +141,6 @@
             return (sa);
         }
 </script>
+
 </body>
 </html>

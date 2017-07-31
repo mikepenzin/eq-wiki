@@ -6,10 +6,11 @@ var bodyParser              = require("body-parser"),
     flash                   = require("connect-flash"),
     User                    = require('./models/user'),
     compression             = require('compression'),
+    schedule                = require('node-schedule'),
     express                 = require("express"),
+    cronJobs                = require("./schedule/index"),
     expressSanitizer        = require('express-sanitizer'),
     app                     = express();
-
 
 app.use(compression(9));
 
@@ -18,11 +19,9 @@ var commentRoutes   = require("./routes/comments"),
     postRoutes      = require("./routes/posts"),
     indexRoutes     = require("./routes/index"),
     userRoutes      = require("./routes/users"),
-    adminRoutes      = require("./routes/admin");
+    tagsRoutes      = require("./routes/tags"),
+    adminRoutes     = require("./routes/admin");
 
-
-// If process.env.DATABASEURL = undefined - need to perform:
-// export DATABASEURL=mongodb://localhost/eqwiki
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.DATABASEURL || 'mongodb://localhost/eqwiki');
 
@@ -74,12 +73,39 @@ app.use(function(req, res, next){
 // END - Passport configuration
 //=========================
 
+//=========================
+// Cron jobs configuration
+//=========================
+
+if (process.env.NODE_ENV === 'production') {
+    // Every month on day 1, hour 15:05 all views data will be archived 
+    // inside previousData array of every post and tag instance.
+    // I order to view in admin panel monthly updated data
+    
+    // Uncomment following code in order to perform cron job every month.   
+    // var monthly = schedule.scheduleJob({hour: 15, minute: 05, date: 1}, function(){
+    //   cronJobs.job();
+    // });
+    
+    // Same as above if you willing to update the views data every saturday.
+    var weekly = schedule.scheduleJob({dayOfWeek: 6}, function(){
+      cronJobs.job();
+    });
+    
+}
+
+//=========================
+// End - Cron job configuration
+//=========================
 
 app.use("/", indexRoutes);
 app.use("/profile", userRoutes);
 app.use("/posts", postRoutes);
 app.use("/posts/:id/comments", commentRoutes);
 app.use("/admin", adminRoutes);
+app.use("/tags", tagsRoutes);
+
+
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("=========================");
