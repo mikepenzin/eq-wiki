@@ -7,7 +7,7 @@
       <h2>Create New Post</h2>
   </div>
   <div class="add-post">
-    <form action="/posts" method="POST">
+    <form action="/posts" method="POST" id="createNewPost">
       <div class="form-group">
         <label for="postcreationTitle">Post Title:</label>
         <input type="text" class="form-control" name="name" placeholder="Add post title" required>
@@ -68,14 +68,38 @@
       delimiter: [',','-', '_'],
       limit: 4
     });
-  
-    $('#tokenfield-1').on('tokenfield:createtoken', function (event) {
-  	    var existingTokens = $(this).tokenfield('getTokens');
+  	
+  	$('#createNewPost').submit(function( event ) {
+  	    var existingTokens = $('#tokenfield-1').tokenfield('getTokens');
+  	    var tagsDB = <%- JSON.stringify(tags); %>;
   	    $.each(existingTokens, function(index, token) {
-  	        if (token.value === event.attrs.value)
+  	        if (!tagsDB.includes(token.value)) {
   	            event.preventDefault();
+  	            $.notify({
+                	// options
+                	icon: 'glyphicon glyphicon-warning-sign',
+                	allow_dismiss: true,
+                	message: 'You cannot submit new article with unrecognized tag!'
+                },{
+                	// settings
+                	type: 'danger',
+                	placement: {
+                		from: "top",
+                		align: "right"
+                	},
+                	offset: 20,
+                	spacing: 10,
+                	z_index: 1031,
+                	delay: 5000,
+                	timer: 1000,
+                	animate: {
+                		enter: 'animated fadeInDown',
+                		exit: 'animated fadeOutUp'
+                	}
+                });
+  	        }  
   	    });
-  	});
+  	})
   
   });
 </script>

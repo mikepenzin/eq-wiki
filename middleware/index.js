@@ -11,19 +11,6 @@ middlewareObj.isLoggedIn = function (req, res, next){
     }
 };
 
-middlewareObj.isAdmin = function (req, res, next){
-    if(req.isAuthenticated()){
-        if(req.user.role === "manager") {
-            return next();
-        }
-        req.flash("error", "You don't have enough permissions to add new tags!");
-        res.redirect("back");
-    } else {
-        req.flash("error", "Please login first!");
-        res.redirect("/login");
-    }
-};
-
 middlewareObj.isAbleToCreatePost = function (req, res, next){
     if(req.isAuthenticated()){
         if(req.user.ranking > 3  || req.user.role === "manager") {
@@ -43,7 +30,7 @@ middlewareObj.isUserAdmin = function (req, res, next){
         if(req.user.role === "manager") {
             return next();   
         } else {
-            req.flash("error", "You role isn't set as Manager");
+            req.flash("error", "You don't have permissions to perform this action.");
             res.redirect("back");
         }
     } else {
