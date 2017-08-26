@@ -5,6 +5,29 @@ var User        = require('../models/user');
 var middleware  = require('../middleware');
 
 
+router.get("/reset", function(req, res){
+    res.render("user/reset");
+});
+
+router.post('/reset', function(req, res) {
+ 
+  User.findOne({ username: req.body.username }, function(err, user) {
+    /* istanbul ignore if */
+    if(err){
+      console.log(err);
+    }
+    user.setPassword(req.body.password, function(err){
+      /* istanbul ignore if */
+      if(err){
+        console.log(err);
+      } else {
+        res.redirect('/login');   
+      }
+    });
+  });  
+});
+
+
 router.get("/:user_id", middleware.isLoggedIn, function(req, res){
     User.findById(req.params.user_id, function(err, foundUser){
         if (err) {

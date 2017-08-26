@@ -65,9 +65,16 @@
         delay: 100
       },
       showAutocompleteOnFocus: true,
-      delimiter: [',','-', '_'],
-      limit: 4
+      delimiter: [',','-', '_']
     });
+    
+     $('#tokenfield-1').on('tokenfield:createtoken', function (event) {
+  	    var existingTokens = $(this).tokenfield('getTokens');
+  	    $.each(existingTokens, function(index, token) {
+  	        if (token.value === event.attrs.value)
+  	            event.preventDefault();
+  	    });
+  	});
   	
   	$('#createNewPost').submit(function( event ) {
   	    var existingTokens = $('#tokenfield-1').tokenfield('getTokens');

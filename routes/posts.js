@@ -209,12 +209,12 @@ router.put("/:id", middleware.checkPostOwnership, function(req, res){
     var name = req.body.name;
     var descr = req.body.descr;
     var tags = req.body.tag.split(", ");
-    var newpost = {name: name, descr: descr};
+    var newpost = {name: name, descr: descr, tags: tags};
     
     post.findById(req.params.id, function(err, foundPost){
+        
         if(err){ console.log(err); res.redirect("back"); } 
         var oldTags = foundPost.tags;
-        
         tagsPostsCount(oldTags, tags);
         
         post.findByIdAndUpdate(req.params.id, newpost, function(err, updatedPost){
@@ -324,9 +324,12 @@ var tagsView = function(tags){
     for (var q = 0; q < tags.length; q++) {
         
         Tags.find({tag: tags[q]}, function(err, foundTag) {
-            if(err){console.log(err);}
-            foundTag[0].searchNumber++;
-            foundTag[0].save();
+            if(err || foundTag == null || foundTag.length == 0){
+                console.log(err);
+            } else {
+                foundTag[0].searchNumber++;
+                foundTag[0].save();
+            }
         });
         
     }
@@ -339,9 +342,13 @@ var tagsPostsCount = function(oldTags, newTags){
     for (var w = 0; w < plusTags.length; w++) {
         
         Tags.findOne({tag: plusTags[w]}, function(err, foundTag) {
-            if(err){console.log(err);}
-            foundTag.postsNumber++;
-            foundTag.save();
+            console.log(foundTag);
+            if(err || foundTag == null || foundTag.length == 0){
+                console.log(err);
+            } else {
+                foundTag.postsNumber++;
+                foundTag.save();
+            }    
         });
         
     }
@@ -349,9 +356,13 @@ var tagsPostsCount = function(oldTags, newTags){
     for (var r = 0; r < minusTags.length; r++) {
         
         Tags.find({tag: minusTags[r]}, function(err, foundTag) {
-            if(err){console.log(err);}
-            foundTag[0].postsNumber--;
-            foundTag[0].save();
+            console.log(foundTag);
+            if(err || foundTag == null || foundTag.length == 0){
+                console.log(err);
+            } else {
+                foundTag[0].postsNumber--;
+                foundTag[0].save();
+            }
         });
         
     }
@@ -361,9 +372,10 @@ var startTagsPostsCount = function(tags) {
     
     for (var o = 0; o < tags.length; o++) {
         Tags.find({ tag: tags[o] }, function(err, foundTag) {
-            if(err){console.log(err);}
-            foundTag[0].postsNumber++;
-            foundTag[0].save();
+            if(err || foundTag == null || foundTag.length == 0){console.log(err);} else {
+                foundTag[0].postsNumber++;
+                foundTag[0].save();
+            }
         });
     }
 };
@@ -372,9 +384,10 @@ var removeTagsPostsCount = function(tags) {
     
     for (var o = 0; o < tags.length; o++) {
         Tags.find({ tag: tags[o] }, function(err, foundTag) {
-            if(err){console.log(err);}
-            foundTag[0].postsNumber--;
-            foundTag[0].save();
+            if( err || foundTag == null || foundTag.length == 0){console.log(err);} else {
+                foundTag[0].postsNumber--;
+                foundTag[0].save();
+            }
         });
     }
 };

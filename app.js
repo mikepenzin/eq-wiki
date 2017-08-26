@@ -88,7 +88,7 @@ if (process.env.NODE_ENV === 'production') {
     // });
     
     // Same as above if you willing to update the views data every saturday.
-    var weekly = schedule.scheduleJob({dayOfWeek: 6}, function(){
+    var monthly = schedule.scheduleJob({date: 1}, function(){
       cronJobs.job();
     });
     
