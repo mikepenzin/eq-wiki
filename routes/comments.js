@@ -91,18 +91,31 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
 //DELETE Comment route
 router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, res){
    // remove comments
-   Comment.findByIdAndRemove(req.params.comment_id, function(err){
-      if (err) {
-         req.flash("error", "Something whent wrong :(");
-         console.error(err);
+   post.findById(req.params.id).populate('comments').exec(function(err, foundPost){
+      if(err){
+        console.log(err);
+        res.redirect("/posts");
       } else {
-          User.findById(req.user._id, function(err, foundUser){
-            foundUser.commentsNumber--;
-            foundUser.save();
-          });
-          res.redirect("/posts/" + req.params.id);
-      }        
-   });
+      for(var i = 0; i < foundPost.comments.length; i++) {
+        if(foundPost.comments[i]._id == req.params.comment_id) {
+            foundPost.comments.splice(i, 1);
+            foundPost.save();
+        }
+      }  
+      Comment.findByIdAndRemove(req.params.comment_id, function(err){
+        if (err) {
+           req.flash("error", "Something whent wrong :(");
+           console.error(err);
+        } else {
+            User.findById(req.user._id, function(err, foundUser){
+              foundUser.commentsNumber--;
+              foundUser.save();
+            });
+            res.redirect("/posts/" + req.params.id);
+        }        
+      });
+      } 
+   });     
 });
 
 
